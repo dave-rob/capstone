@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-spark = SparkSession.builder.appName("Wrangling Quiz").getOrCreate()
+spark = SparkSession.builder.appName("IngestResults").getOrCreate()
 
 path = "./data/raw/Results.csv"
 full_df = spark.read.csv(path, header=True)
@@ -15,3 +15,5 @@ df = full_df.drop("Name", "Zip")
 output_path = "data/staging/results"
 
 df.write.mode("append").partitionBy("year").parquet(output_path)
+
+spark.stop()
