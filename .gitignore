@@ -1,0 +1,4 @@
+logs/
+config/
+dags/test_dag.py
+dags/__pycache__
