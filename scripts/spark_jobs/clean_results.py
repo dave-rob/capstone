@@ -1,7 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum
 from pyspark.sql import functions as F
-from pyspark.sql.types import NumericType
 
 spark = SparkSession.builder.appName("CleanResults").getOrCreate()
 
