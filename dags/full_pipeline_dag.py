@@ -49,9 +49,16 @@ def full_pipeline():
         conn_id="spark_default",
         verbose=True
     )
+
+    join_race_results= SparkSubmitOperator(
+        task_id="Join_Race_Results_Data",
+        application="/opt/spark/jobs/join_race_results.py",
+        conn_id="spark_default",
+        verbose=True
+    )
     
     ingest_raw_bqstandards >> clean_bq_standards
-    ingest_raw_results >> clean_result_data
-    ingest_raw_races >> clean_race_data
+    ingest_raw_results >> clean_result_data >> join_race_results
+    ingest_raw_races >> clean_race_data >> join_race_results
 
 pipeline = full_pipeline()
