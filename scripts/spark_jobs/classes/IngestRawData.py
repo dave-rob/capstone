@@ -21,11 +21,14 @@ class IngestRawData():
 
         df = full_df.drop(*self.drop)
 
+        df.show(10)
+
         output_path = f"/opt/airflow/data/staging/{self.csv}"
 
-        if "Year" in df.columns:
-            df.write.mode("overwrite").partitionBy("Year").parquet(output_path)
-        else:
-            df.write.mode("overwrite").parquet(output_path)
+        # if "Year" in df.columns:
+        #     df.write.mode("overwrite").partitionBy("Year").parquet(output_path)
+        # else:
+        #     df.write.mode("overwrite").parquet(output_path)
+        df.write.option("header", "true").mode("overwrite").csv(output_path)
 
         spark.stop()
