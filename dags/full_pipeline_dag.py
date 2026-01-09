@@ -56,9 +56,16 @@ def full_pipeline():
         conn_id="spark_default",
         verbose=True
     )
+
+    create_qualified_results= SparkSubmitOperator(
+        task_id="Create_Qualified_Results_Data",
+        application="/opt/spark/jobs/did_qualify.py",
+        conn_id="spark_default",
+        verbose=True
+    )
     
-    ingest_raw_bqstandards >> clean_bq_standards
-    ingest_raw_results >> clean_result_data >> join_race_results
+    ingest_raw_bqstandards >> clean_bq_standards >> create_qualified_results
+    ingest_raw_results >> clean_result_data >> join_race_results >> create_qualified_results
     ingest_raw_races >> clean_race_data >> join_race_results
 
 pipeline = full_pipeline()
