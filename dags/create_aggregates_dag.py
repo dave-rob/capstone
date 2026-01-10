@@ -4,6 +4,7 @@ from airflow.operators.empty import EmptyOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.operators.python import PythonOperator
 from lib.aggregate_plots import year_plot, plot_age_group, race_plot, plot_multiple_char
+from lib.regression import createModel
 from datetime import datetime
 
 @dag(
@@ -25,7 +26,7 @@ def agg_pipeline():
         allowed_states=["success"],
         failed_states=["failed"],
         mode="reschedule",
-        poke_interval=60,
+        poke_interval=30,
         timeout=60 * 60,
     )
 
@@ -76,6 +77,11 @@ def agg_pipeline():
         python_callable=plot_multiple_char
     )
 
+    create_regression_model = PythonOperator(
+        task_id="Build_Regression_Model",
+        python_callable=createModel
+    )
+
     finish = EmptyOperator(
         task_id="finish"
     )
@@ -84,4 +90,5 @@ def agg_pipeline():
     wait_for_curated >> build_race_qual_agg >> plot_race >> finish
     wait_for_curated >> build_year_qual_agg >> plot_year >> finish
     wait_for_curated >> build_race_char_qual_agg >> plot_multiple >> finish
+    build_race_char_qual_agg >> create_regression_model >> finish
 agg = agg_pipeline()

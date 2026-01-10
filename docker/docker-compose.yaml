@@ -80,6 +80,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
+    - ${AIRFLOW_PROJ_DIR:-.}/artifacts:/opt/airflow/artifacts
     - ${AIRFLOW_PROJ_DIR:-.}/scripts/spark_jobs:/opt/spark/jobs
   user: "${AIRFLOW_UID:-50000}:0"
   # user: "1001:1001"

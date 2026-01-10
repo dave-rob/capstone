@@ -22,3 +22,4 @@ USER airflow
 
 RUN pip install apache-airflow-providers-apache-spark
 RUN pip install matplotlib
+RUN pip install statsmodels

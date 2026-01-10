@@ -6,9 +6,9 @@ def year_plot():
     import os
 
 
-    df = pd.read_parquet("data/aggregates/YearQual")
+    df = pd.read_parquet("/opt/airflow/data/aggregates/YearQual")
     df["Year"] = df['Year'].astype('str')
-    os.makedirs("data/plots", exist_ok=True)
+    os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
     colors = [
     "tab:orange" if entry else "tab:blue"
@@ -28,7 +28,7 @@ def year_plot():
     plt.ylabel("Qualified Runners")
     plt.legend(handles=legend_elements)
     plt.tight_layout()
-    plt.savefig("data/plots/bq_by_year.png")
+    plt.savefig("/opt/airflow/artifacts/plots/bq_by_year.png")
     plt.close()
 
 def plot_age_group():
@@ -38,8 +38,8 @@ def plot_age_group():
     import os
 
 
-    df = pd.read_parquet("data/aggregates/AgeGroupQual")
-    os.makedirs("data/plots", exist_ok=True)
+    df = pd.read_parquet("/opt/airflow/data/aggregates/AgeGroupQual")
+    os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
     pivot_df = (
         df.pivot(
@@ -73,7 +73,7 @@ def plot_age_group():
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig("data/plots/bq_by_age_group_gender.png")
+    plt.savefig("/opt/airflow/artifacts/plots/bq_by_age_group_gender.png")
     plt.close()
 
 def race_plot():
@@ -81,14 +81,14 @@ def race_plot():
     import matplotlib.pyplot as plt
     import os
 
-    df = pd.read_parquet("data/aggregates/RaceQual")
+    df = pd.read_parquet("/opt/airflow/data/aggregates/RaceQual")
 
     big_marathons = df[df['total_runners'] > 10000]
     
     big_marathons["qualification_rate"] = big_marathons['qualified_runners']/big_marathons['total_runners']
 
     df = big_marathons.sort_values("qualification_rate", ascending=True)
-    os.makedirs("data/plots", exist_ok=True)
+    os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
     plt.figure(figsize=(10, 6))
     plt.barh(df["Race"], df["qualification_rate"])
@@ -98,7 +98,7 @@ def race_plot():
     plt.title("Boston Qualification Rate by Race")
 
     plt.tight_layout()
-    plt.savefig("data/plots/bq_rate_by_race.png")
+    plt.savefig("/opt/airflow/artifacts/plots/bq_rate_by_race.png")
     plt.close()
 
 def plot_multiple_char():
@@ -107,7 +107,7 @@ def plot_multiple_char():
     import numpy as np
     import os
 
-    df = pd.read_parquet("data/aggregates/RaceCharQual")
+    df = pd.read_parquet("/opt/airflow/data/aggregates/RaceCharQual")
     print(df)
     # Filter small groups
     df = df[df["total_runners"] >= 100]
@@ -116,7 +116,7 @@ def plot_multiple_char():
     genders = sorted(df["Gender"].unique())
     age_groups = sorted(df["Age Group"].unique())
 
-    os.makedirs("data/plots", exist_ok=True)
+    os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
     n_races = len(races)
     fig, axes = plt.subplots(
@@ -160,5 +160,5 @@ def plot_multiple_char():
     axes[-1].set_xticklabels(age_groups, rotation=45)
 
     plt.tight_layout()
-    plt.savefig("data/plots/bq_rate_race_char.png")
+    plt.savefig("/opt/airflow/artifacts/plots/bq_rate_race_char.png")
     plt.close()

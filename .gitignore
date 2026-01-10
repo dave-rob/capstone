@@ -3,3 +3,4 @@ config/
 dags/test_dag.py
 *__pycache__
 data
+artifacts
