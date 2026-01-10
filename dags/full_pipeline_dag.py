@@ -5,6 +5,7 @@ from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOpe
 @dag(
     dag_id="full_pipeline",
     start_date=datetime(2026, 1, 7),
+    schedule="@daily",
     catchup=False
 )
 def full_pipeline():
