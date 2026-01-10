@@ -4,7 +4,7 @@ from pyspark.sql.types import IntegerType
 
 spark = SparkSession.builder.appName("CompareDataQual").getOrCreate()
 
-df = spark.read.parquet("data/curated/Qualified_Results")
+df = spark.read.parquet("/opt/airflow/data/curated/Qualified_Results")
 df = df.withColumn("Qualified", col("Qualified").cast("boolean"))
 
 df.printSchema()
