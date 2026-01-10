@@ -8,26 +8,26 @@ from datetime import datetime
 
 @dag(
     dag_id="curated_to_aggregates",
-    start_date=datetime(2024, 1, 1),
-    schedule="@daily",
+    start_date=datetime(2026, 1, 1),
+    schedule="5 10 * * *",
     catchup=False,
 )
 def agg_pipeline():
     
-    wait_for_curated = EmptyOperator(
-        task_id="start"
-    )
-
-    # wait_for_curated = ExternalTaskSensor(
-    #     task_id="wait_for_raw_to_curated",
-    #     external_dag_id="raw_to_curated_pipeline",
-    #     # external_task_id=None,
-    #     # allowed_states=["success"],
-    #     # failed_states=["failed"],
-    #     # mode="reschedule",
-    #     # poke_interval=60,
-    #     # timeout=60 * 60,
+    # wait_for_curated = EmptyOperator(
+    #     task_id="start"
     # )
+
+    wait_for_curated = ExternalTaskSensor(
+        task_id="wait_for_raw_to_curated",
+        external_dag_id="raw_to_curated_pipeline",
+        external_task_id=None,
+        allowed_states=["success"],
+        failed_states=["failed"],
+        mode="reschedule",
+        poke_interval=60,
+        timeout=60 * 60,
+    )
 
     build_age_group_agg = SparkSubmitOperator(
         task_id="Build_Age_Group_Qual_Aggregate",

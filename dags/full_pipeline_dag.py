@@ -5,8 +5,8 @@ from airflow.operators.empty import EmptyOperator
 
 @dag(
     dag_id="raw_to_curated_pipeline",
-    start_date=datetime(2026, 1, 7),
-    schedule="@daily",
+    start_date=datetime(2026, 1, 1),
+    schedule="5 10 * * *",
     catchup=False
 )
 def full_pipeline():
