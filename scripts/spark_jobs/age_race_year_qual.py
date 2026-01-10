@@ -14,14 +14,15 @@ df_encoded = df.withColumn("Qualified_encoded", col("Qualified").cast(IntegerTyp
 df_encoded.show(10)
 
 qual_rate_df = df_encoded.groupBy(
-    "Year", "2026_BQ_Entry", "Age Group",  "Race"
+    "Year", "2026_BQ_Entry", "Age Group",  "Gender", "Race"
 ).agg(
     count("*").alias("total_runners"),
     sum(col("Qualified_encoded")).alias("qualified_runners")
 ).orderBy(
     asc('Year'),
     asc("Race"),
-    asc('Age Group')
+    asc('Age Group'),
+    asc('Gender')
 )
 
 qual_rate_df.show()

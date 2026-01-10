@@ -1,10 +1,10 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum, when
-from itertools import chain
+# from itertools import chain
 
 spark = SparkSession.builder.appName("CleanRace").getOrCreate()
 
-df = spark.read.csv("data/staging/Races", header=True)
+df = spark.read.csv("/opt/airflow/data/staging/Races", header=True)
 
 df = df.dropDuplicates()
 print(df.count())
