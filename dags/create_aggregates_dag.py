@@ -35,9 +35,17 @@ def agg_pipeline():
         conn_id="spark_default",
         verbose=True
     )
+
     build_year_qual_agg = SparkSubmitOperator(
         task_id="Build_Year_Qual_Aggregate",
         application="/opt/spark/jobs/year_qual.py",
+        conn_id="spark_default",
+        verbose=True
+    )
+
+    build_race_char_qual_agg = SparkSubmitOperator(
+        task_id="Build_Race_Characteristics_Qual_Aggregate",
+        application="/opt/spark/jobs/age_race_year_qual.py",
         conn_id="spark_default",
         verbose=True
     )
@@ -46,5 +54,5 @@ def agg_pipeline():
     build_age_group_agg
     build_race_qual_agg
     build_year_qual_agg
-
+    build_race_char_qual_agg
 agg = agg_pipeline()
