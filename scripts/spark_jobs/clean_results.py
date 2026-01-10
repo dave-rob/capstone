@@ -18,7 +18,7 @@ def detect_iqr_outliers(df, col):
     return  df.where((F.col(col) > lower) & (F.col(col) < upper))
     
 
-df = spark.read.csv("data/staging/Results", header=True)
+df = spark.read.csv("/opt/airflow/data/staging/Results", header=True)
 
 df = df.dropDuplicates()
 print(df.count())
@@ -41,8 +41,12 @@ no_outlier_df = detect_iqr_outliers(df_casted, "Finish")
 
 # fastest marathon time is 1:59:40 or 7180 seconds
 final_df = no_outlier_df.where(col("Finish") >= 7180)
-print(final_df.count())
 
+final_df = final_df.where(
+    (col("Gender") == 'M') |
+    (col("Gender") == 'F') |
+    (col("Gender") == 'X')
+)
 output_path = f"/opt/airflow/data/staging/Results"
 
 final_df.write.mode("overwrite").partitionBy("Year").parquet(output_path)
