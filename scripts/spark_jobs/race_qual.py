@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import count, sum, col, desc
 from pyspark.sql.types import IntegerType
 
-spark = SparkSession.builder.appName("AgeGroupQual").getOrCreate()
+spark = SparkSession.builder.appName("RaceQual").getOrCreate()
 
 df = spark.read.parquet("/opt/airflow/data/curated/Qualified_Results")
 df = df.withColumn("Qualified", col("Qualified").cast("boolean"))
