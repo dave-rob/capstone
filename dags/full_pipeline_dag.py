@@ -1,14 +1,25 @@
 from airflow.decorators import dag
 from datetime import datetime
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.operators.empty import EmptyOperator
 
 @dag(
-    dag_id="full_pipeline",
+    dag_id="raw_to_curated_pipeline",
     start_date=datetime(2026, 1, 7),
     schedule="@daily",
     catchup=False
 )
 def full_pipeline():
+
+    start_point = EmptyOperator(
+        task_id="Start"
+    )
+
+    end_point = EmptyOperator(
+        task_id="End"
+    )
+
+
     ingest_raw_bqstandards = SparkSubmitOperator(
         task_id="Ingest_Raw_BQ_Standards",
         application="/opt/spark/jobs/ingest_bqstandards.py",
@@ -65,8 +76,8 @@ def full_pipeline():
         verbose=True
     )
     
-    ingest_raw_bqstandards >> clean_bq_standards >> create_qualified_results
-    ingest_raw_results >> clean_result_data >> join_race_results >> create_qualified_results
-    ingest_raw_races >> clean_race_data >> join_race_results
+    start_point >> ingest_raw_bqstandards >> clean_bq_standards >> create_qualified_results
+    start_point >> ingest_raw_results >> clean_result_data >> join_race_results >> create_qualified_results >> end_point
+    start_point >> ingest_raw_races >> clean_race_data >> join_race_results
 
 pipeline = full_pipeline()
