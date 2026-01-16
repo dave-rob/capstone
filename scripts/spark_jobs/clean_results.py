@@ -47,6 +47,9 @@ final_df = final_df.where(
     (col("Gender") == 'F') |
     (col("Gender") == 'X')
 )
+
+final_df.show(10)
+
 output_path = f"/opt/airflow/data/staging/Results"
 
 final_df.write.mode("overwrite").partitionBy("Year").parquet(output_path)

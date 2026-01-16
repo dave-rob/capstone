@@ -87,7 +87,9 @@ def race_plot():
     
     big_marathons["qualification_rate"] = big_marathons['qualified_runners']/big_marathons['total_runners']
 
-    df = big_marathons.sort_values("qualification_rate", ascending=True)
+    big_marathons_no_boston = big_marathons[big_marathons['Race'] != "Boston Marathon"]
+
+    df = big_marathons_no_boston.sort_values("qualification_rate", ascending=True)
     os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
     plt.figure(figsize=(10, 6))

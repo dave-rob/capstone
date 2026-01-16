@@ -19,6 +19,8 @@ class IngestRawData():
         path = f"/opt/airflow/data/raw/{self.csv}.csv"
         full_df = spark.read.csv(path, header=True)
 
+        full_df.show(10)
+
         df = full_df.drop(*self.drop)
 
         df.show(10)

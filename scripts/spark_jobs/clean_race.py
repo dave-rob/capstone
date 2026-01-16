@@ -27,6 +27,8 @@ print("Null values after cleaning")
 null_counts = full_df.select([sum(col(c).isNull().cast("int")).alias(c) for c in full_df.columns])
 null_counts.show()
 
+full_df.show(10)
+
 output_path = f"/opt/airflow/data/staging/Races"
 
 full_df.write.mode("overwrite").partitionBy("Year").parquet(output_path)

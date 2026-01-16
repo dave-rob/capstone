@@ -9,7 +9,7 @@ def createModel():
     df = pd.read_parquet("/opt/airflow/data/aggregates/RaceCharQual")
     print(df)
 
-    df = df[df["total_runners"] > 100]
+    # df = df[df["total_runners"] > 50]
     print(df)
 
     df["not_qualified_runners"] = df["total_runners"] - df["qualified_runners"]
