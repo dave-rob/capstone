@@ -1,3 +1,41 @@
+# Setup
+
+Follow the steps below to build and run the application using Docker and Docker Compose.
+
+### Prerequisites
+- Docker installed
+- Docker Compose installed
+
+### Start the containers
+In the docker directory type the following command:
+```
+docker compose up -d --build
+```
+After a few minutes your containers should be built and started
+
+### Create the spark_default connection
+To perform any task utilizing Pyspark, the spark_default connection must be added in Airflow
+
+1. Go to the Airflow Webpage (localhost:8080)
+2. Log in with the airflow credentials
+3. Click on Admin on the left side
+4. Click on Connections
+5. Click Add Connection in the top right
+6. Ensure the values are the same as the screenshot below and click Save
+![Spark Connection](readme_repo/connection.png)
+
+###  Stop the containers
+In the docker directory type the following command:
+```
+docker compose stop
+```
+
+### If needed to delete the containers
+In the docker directory type the following command:
+```
+docker compose down
+```
+
 # Capstone
 
 ## Designing an Orchestrated Data Engineering Pipeline for Race Results and Boston Qualifying Analysis
