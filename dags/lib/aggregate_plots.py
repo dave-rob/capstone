@@ -9,7 +9,7 @@ def year_plot():
     df = pd.read_parquet("/opt/airflow/data/aggregates/YearQual")
     df["Year"] = df['Year'].astype('str')
     os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
-
+    df["qualification_rate"] = df["qualified_runners"]/df["total_runners"]
     colors = [
     "tab:orange" if entry else "tab:blue"
     for entry in df["2026_BQ_Entry"]
@@ -31,6 +31,23 @@ def year_plot():
     plt.savefig("/opt/airflow/artifacts/plots/bq_by_year.png")
     plt.close()
 
+    plt.figure()
+    plt.plot(
+        df["Year"],
+        df["qualification_rate"],
+        marker="o"
+    )
+
+    plt.title("Boston Qualification Rate by Year")
+    plt.xlabel("Year")
+    plt.ylabel("Qualification Rate")
+    plt.ylim(0, 1)
+    plt.grid(True)
+    plt.tight_layout()
+
+    plt.savefig("/opt/airflow/artifacts/plots/bq_rate_by_year.png")
+    plt.close()
+
 def plot_age_group():
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -41,11 +58,12 @@ def plot_age_group():
     df = pd.read_parquet("/opt/airflow/data/aggregates/AgeGroupQual")
     os.makedirs("/opt/airflow/artifacts/plots", exist_ok=True)
 
+    df["qualification_rate"] = df["qualified_runners"]/df["total_runners"]
     pivot_df = (
         df.pivot(
             index="Age Group",
             columns="Gender",
-            values="qualified_runners"
+            values="qualification_rate"
         )
         .fillna(0)
         .sort_index()
@@ -73,7 +91,7 @@ def plot_age_group():
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig("/opt/airflow/artifacts/plots/bq_by_age_group_gender.png")
+    plt.savefig("/opt/airflow/artifacts/plots/bq_rate_by_age_group_gender.png")
     plt.close()
 
 def race_plot():
